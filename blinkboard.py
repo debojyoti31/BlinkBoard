@@ -43,10 +43,10 @@ MORSE_CODE = {
     "110": "g", "0001": "h", "000": "i", "0111": "j", "101": "k", "0100": "l",
     "111": "m", "10": "n", "1111": "o", "0110": "p", "1101": "q", "010": "r",
     "0000": "s", "11": "t", "001": "u", "0101": "v", "011": "w", "1001": "x",
-    "1011": "y", "1100": "z", "0011": "_", "1": "<", "00000": "^"
+    "1011": "y", "1100": "z", "0011": " ", "1": "__backspace__", "00000": "\n", "000000": "__clearBoard__"
 }
 ########################################################
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 detector = fmm.FaceMeshDetector(minDetectionCon=0.65, maxFaces=1)
 
@@ -54,7 +54,7 @@ while True:
     success, img = cap.read()
     img_f, faces = detector.findFaceMesh(img, draw=False)
 
-    imgCanvas = np.zeros((200, 1000, 3), np.uint8)
+    imgCanvas = np.zeros((720, 1280, 3), np.uint8)
 
     if len(faces) != 0:
         lmList = faces[0]
@@ -118,7 +118,7 @@ while True:
                 if morse == "1":
                     if(len(morse_list))>0:
                         morse_list.pop()
-                elif morse == "00000":
+                elif morse == "000000":
                     morse_list = []
                 else:
                     morse_list.append(morse)
@@ -126,8 +126,8 @@ while True:
 
 
 
-        cv2.putText(img, f'left eye: {int(left_eye_EAR)}', (370, 410), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-        cv2.putText(img, f'right eye: {int(right_eye_EAR)}', (370, 440), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        cv2.putText(img, f'left mear: {int(left_eye_EAR)}', (380, 420), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        cv2.putText(img, f'right mear: {int(right_eye_EAR)}', (380, 450), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 ##################################################
     # Graph
     if len(signal) > 30:
@@ -152,8 +152,13 @@ while True:
     text = []
     for morse_letter in morse_list:
         text.append(MORSE_CODE[morse_letter])
+    text.append('_')
     if len(text)>0:
-        cv2.putText(imgCanvas, ''.join(text), (20, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 2)
+        y0, dy = 50, 50
+        for i, line in enumerate(''.join(text).split('\n')):
+            y = y0 + i * dy
+            cv2.putText(imgCanvas, line, (20, y), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 2)
+        # cv2.putText(imgCanvas, ''.join(text), (20, 70), cv2.FONT_HERSHEY_PLAIN, 3, (255, 255, 255), 2)
 
 
     cv2.imshow("Cam", cam)
