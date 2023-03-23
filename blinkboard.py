@@ -104,9 +104,9 @@ while True:
         plot_img = np.zeros_like(img)
 
 
-        if left_eye_EAR < 25:   # Write Mode
+        if left_eye_EAR < 25:   # Write Mode, Change eye here, change thresold here.
             cv2.putText(img, f'left eye: close', (20, 40), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            if right_eye_EAR <20:
+            if right_eye_EAR <20:   # Change eye here, change thresold here.
                 cv2.putText(img, f'right eye: close', (20, 70), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
                 signal.append(1)
             else:
