@@ -10,5 +10,5 @@ Close Left Eye to go into write mode, and blink Right Eye to write. Then open Le
     "0000": "s", "11": "t", "001": "u", "0101": "v", "011": "w", "1001": "x",
     "1011": "y", "1100": "z", "0011": " ", "1": "_backspace_", "00000": "\n", "000000": "_clearBoard_"
 
-<br> Short blink is 0, Long Blink is 1.
-
+<br> Short blink is 0, Long Blink(1 sec) is 1. <br>
+eg:- for typing "a" close Left Eye. with Right Eye, short blink once then long blink once, then open left eye.
