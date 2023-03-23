@@ -4,6 +4,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.use('Agg')
 import FaceMeshModule as fmm
+import datetime
 #######################
 signal = []
 morse_list = []
@@ -46,7 +47,11 @@ MORSE_CODE = {
     "1011": "y", "1100": "z", "0011": " ", "1": "__backspace__", "00000": "\n", "000000": "__clearBoard__"
 }
 ########################################################
-cap = cv2.VideoCapture(1)
+now = datetime.datetime.now()
+with open("history.txt", "a") as f:
+    f.write("\n\n")
+    f.write(str(now.strftime("%Y-%m-%d %H:%M")))
+cap = cv2.VideoCapture(0)
 
 detector = fmm.FaceMeshDetector(minDetectionCon=0.65, maxFaces=1)
 
@@ -119,6 +124,16 @@ while True:
                     if(len(morse_list))>0:
                         morse_list.pop()
                 elif morse == "000000":
+
+                    # save to history
+                    with open("history.txt", "a") as f:
+                        f.write('\n')
+                        for line in (''.join(text)):
+                            if line[-1] == "_":
+                                f.write(line[:-1])
+                            else:
+                                f.write(line)
+
                     morse_list = []
                 else:
                     morse_list.append(morse)
@@ -165,6 +180,14 @@ while True:
     cv2.imshow("Text", imgCanvas)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
+
+        # save to history
+        with open("history.txt", "a") as f:
+            f.write('\n')
+            for line in (''.join(text)):
+                if line[-1] == "_":
+                    f.write(line[:-1])
+                else: f.write(line)
         break
 
 cap.release()
